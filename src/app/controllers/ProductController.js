@@ -3,17 +3,19 @@ import User from '../models/User';
 
 class ProductController {
   async store(req, res) {
-    const user = await User.findByPK(req.userID);
-    if (user.seller === false) {
-      return res.status(401).json({
-        error:
-          'You have no authorization to create a product, enable it in update user session',
-      });
-    }
     try {
+      const user = await User.findByPk(req.userId);
+
+      if (!user || user.seller === false) {
+        return res.status(401).json({
+          error:
+            'You have no authorization to create a product, enable it in update user session',
+        });
+      }
       const { name, value, quantity } = req.body;
+      const seller_id = user.id;
       const product = await Product.create({
-        seller_id: req.userId,
+        seller_id,
         name,
         value,
         quantity,
