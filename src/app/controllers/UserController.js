@@ -25,12 +25,13 @@ class UserController {
         });
       }
       // Create user and return a json with the new user info
-      const { id, name } = await User.create(req.body);
+      const { id, name, seller } = await User.create(req.body);
 
       return res.json({
         id,
         name,
         email,
+        seller,
       });
     } catch (err) {
       // Return any request errors produced
@@ -78,12 +79,13 @@ class UserController {
           .json({ error: 'Request Failed, currently password does not match' });
       }
 
-      const { id, name } = await user.update(req.body);
+      const { id, name, seller } = await user.update(req.body);
 
       return res.json({
         id,
         name,
         email,
+        seller,
       });
     } catch (err) {
       return res.status(400).json({
