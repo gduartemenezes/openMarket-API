@@ -42,6 +42,23 @@ class UserController {
   }
 
   async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string().required(),
+      oldPassword: Yup.string().required().min(6),
+      password: Yup.string()
+        .min(6)
+        .when('oldPassword', (oldPassword, field) =>
+          oldPassword ? field.required() : field
+        ),
+      confirmPassword: Yup.string().when('password', (password, field) =>
+        password ? field.required() : field
+      ),
+    });
+    // Validate req.body
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Invalid data, try again' });
+    }
     // TO-DO, after auth middleware
     try {
       const { email, oldPassword } = req.body;
