@@ -1,7 +1,7 @@
 import { Model, Sequelize } from 'sequelize';
 
 class Product extends Model {
-  static(sequelize) {
+  static init(sequelize) {
     super.init(
       {
         name: Sequelize.STRING,
@@ -20,4 +20,4 @@ class Product extends Model {
   }
 }
 
-export default new Product();
+export default Product;
