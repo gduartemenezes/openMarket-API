@@ -7,7 +7,7 @@ module.exports = {
   database: 'openDev',
   define: {
     timestamps: true,
-    undersocred: true,
+    underscored: true,
     underscoredAll: true,
   },
 };

@@ -17,11 +17,11 @@ class UserController {
       const { email } = req.body;
       // Check if email is alreay in use
       const userExists = await User.findOne({
-        where: email,
+        where: { email },
       });
       if (userExists) {
         return res.status(400).json({
-          message: 'E-mail alredy in use',
+          message: 'E-mail already in use',
         });
       }
       // Create user and return a json with the new user info
