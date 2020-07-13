@@ -40,6 +40,41 @@ class UserController {
       });
     }
   }
+
+  async update(req, res) {
+    // TO-DO, after auth middleware
+    try {
+      const { email, oldPassword } = req.body;
+
+      const user = await User.findByPk(req.userId);
+
+      if (email !== user.email) {
+        const userExists = User.findOne({ where: { email } });
+
+        if (userExists)
+          return res.status(401).json({ error: 'E-mail already in use' });
+      }
+
+      if (oldPassword && !(await user.checkPassword(oldPassword))) {
+        return res
+          .status(401)
+          .json({ error: 'Request Failed, currently password does not match' });
+      }
+
+      const { id, name } = await user.update(req.body);
+
+      return res.json({
+        id,
+        name,
+        email,
+      });
+    } catch (err) {
+      return res.status(400).json({
+        message: 'Request Failed',
+        error: err,
+      });
+    }
+  }
 }
 
 export default new UserController();
